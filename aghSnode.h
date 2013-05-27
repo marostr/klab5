@@ -22,9 +22,9 @@ this->ptr  = pattern.ptr;
 return *this; }
 
 void set_data(TYPE _data) { this->data = _data; }
-TYPE get_data(void) { return data; }
-void set_ptr(aghSnode<TYPE> *nptr) { this->ptr = nptr; }
-aghSnode<TYPE>* get_ptr(void) {return ptr; }
+TYPE& get_data(void) { return data; }
+void set_next(aghSnode<TYPE> *nptr) { this->ptr = nptr; }
+aghSnode<TYPE>* get_next(void) {return ptr; }
 
 
 };
