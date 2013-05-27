@@ -4,7 +4,7 @@
 template<typename TYPE>
 class aghSnode {
 
- private:
+ protected:
 
 TYPE data;
 aghSnode *ptr;
