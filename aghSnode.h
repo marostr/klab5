@@ -1,5 +1,5 @@
 #ifndef AGHSNODE_H
-  #define AGHSNOD_H
+  #define AGHSNODE_H
 
 template<typename TYPE>
 class aghSnode {
