@@ -16,19 +16,46 @@ aghSnode<TYPE>* hptr; //< wskaznik na poczatek listy
  public:
 
 aghSlist<TYPE>(int size=0): hptr(NULL) {}
-~aghSlist<TYPE>() { while(this->size()>0) remove(0); }
+aghSlist(const aghContainer<TYPE> &pattern);
+~aghSlist<TYPE>() { while(this->size()>0) remove(0); hptr = NULL; }
 //kon. kop!!
-//op= !!
+
 
 bool insert(int _index, TYPE const &_val);
 TYPE& at(int _index) const;
 int size(void) const;
 bool remove(int _index);
 
+aghSlist<TYPE>& operator=(const aghSlist<TYPE>  &right);
+
 
 };
 
 
+template<typename TYPE>
+aghSlist<TYPE>::aghSlist(const aghContainer<TYPE> &pattern)
+{
+if(pattern.size()==0) this->hptr = NULL;	
+for(int i=0; i<pattern.size(); i++)
+  this->append(pattern.at(i));
+
+/*
+else
+{
+hptr=new aghSnode<TYPE>;
+hptr->set_data(pattern.hptr->get_data() );	
+}
+aghSnode<TYPE> *tptr=this->hptr,*tptr2=pattern.hptr;
+
+
+	for(int i=1; i<pattern.size(); ++i)
+	   {
+		   tptr->set_next(new aghSnode<TYPE>); //alokacja kolejnego elementu
+		   tptr=tptr->get_next();              //przejscie do nowego el tworzonej listy
+		   tptr2=tptr2->get_next();            //przejscie do kolejnego elementu kopiowanej listy
+		   tptr->set_data(tptr2->get_data() );  //przepisanie danych
+	   } */
+}
 
 template<typename TYPE>
 bool aghSlist<TYPE>::insert(int _index, TYPE const &_val)
@@ -39,7 +66,7 @@ int counter=0;
 if(_index<0) return false;
 else if( _index==0 ) //przypadek 1 - poczatek listy
 {
-std::cout<<"przypadek 1\n";	
+//std::cout<<"przypadek 1\n";	
 	if(hptr==NULL) tptr=NULL;
 	else tptr=hptr;                    //zapamietaj nastepnik glowy
 
@@ -49,7 +76,7 @@ std::cout<<"przypadek 1\n";
 }
 else if(_index < this->size() ) // przypadek 2 - srodek listy
 {
-std::cout<<"przypadek 2\n";
+//std::cout<<"przypadek 2\n";
 
 	while(counter != _index-1) //petla idaca na poz jedna przed rzadanym indexem
 	{
@@ -64,7 +91,7 @@ std::cout<<"przypadek 2\n";
 }
 else // przypadek 3 - wstawianie na koncu
 {
-std::cout<<"przypadek 3\n";	
+//std::cout<<"przypadek 3\n";	
 	while( tptr->get_next()!=NULL ) {tptr=tptr->get_next(); cout<<"*";} //ustawiamy wskaznik na koniec listy
 	for(int i=this->size()-1; i<_index; ++i) //az dojdziemy do odpowiendiego indexu
 		{
@@ -83,7 +110,7 @@ return true;
 
 template<typename TYPE>
 bool aghSlist<TYPE>::remove(int _index)
-{
+{//tu sie da raczej jedna petla ogarnac
 if( ( _index >= this->size() ) || (_index < 0) ) return false;
 
 aghSnode<TYPE> *tptr = hptr, *tptr2;
@@ -111,7 +138,7 @@ return true;
 template<typename TYPE>
 TYPE& aghSlist<TYPE>::at(int _index) const
 {
-if( (_index>= this->size() ) || (_index < 0) ) throw std::string("at() - index poza lista");
+if( (_index>= this->size() ) || (_index < 0) ) throw aghException(-1,"Index out of range!");
 
 
 aghSnode<TYPE> *tptr = hptr; //< tymczasowy ptr
@@ -120,7 +147,7 @@ int counter=0;
 
 while(counter!=_index)
 {
-	if( (tptr==NULL) ) throw std::string("at() - wsk == NULL ");; //jak wskaznik jest nullem
+	if( (tptr==NULL) ) throw aghException(0,"at(): Pointer == NULL" ); //jak wskaznik jest nullem
 	tptr= tptr->get_next();
 	counter++;
 }
@@ -149,6 +176,21 @@ tptr=tptr->get_next();
 return counter;
 }
 
+//----------------------------------------------------------------------
+
+template <typename TYPE>
+aghSlist<TYPE>& aghSlist<TYPE>::operator=(const aghSlist<TYPE>  &right)
+{
+
+if( &right == this ); //sprawdza czy nie przypisujemy a=a,zeby nie tracic danych
+else
+	{
+	if(!(this->isEmpty())) this->clear();
+	for(int i=0; this->size()<right.size(); i++)
+		this->append(right[i]);	
+	}
+return *this;
+}
 
 
 #endif
