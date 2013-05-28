@@ -171,9 +171,11 @@ ostream& operator<<(ostream& out, aghContainer<TYPE> const& right)
 
 //----------------------------------------------------------------------
 
+
 template <typename TYPE>
 aghContainer<TYPE>& aghContainer<TYPE>::operator=(const aghContainer<TYPE>  &right)
 {
+	
 	if( this == &right );
 	else
 		{

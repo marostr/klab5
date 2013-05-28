@@ -26,8 +26,7 @@ TYPE& at(int _index) const;
 int size(void) const;
 bool remove(int _index);
 
-aghSlist<TYPE>& operator=(const aghSlist<TYPE>  &right);
-
+aghSlist<TYPE>& operator=(const aghContainer<TYPE> &right);
 
 };
 
@@ -39,22 +38,6 @@ if(pattern.size()==0) this->hptr = NULL;
 for(int i=0; i<pattern.size(); i++)
   this->append(pattern.at(i));
 
-/*
-else
-{
-hptr=new aghSnode<TYPE>;
-hptr->set_data(pattern.hptr->get_data() );	
-}
-aghSnode<TYPE> *tptr=this->hptr,*tptr2=pattern.hptr;
-
-
-	for(int i=1; i<pattern.size(); ++i)
-	   {
-		   tptr->set_next(new aghSnode<TYPE>); //alokacja kolejnego elementu
-		   tptr=tptr->get_next();              //przejscie do nowego el tworzonej listy
-		   tptr2=tptr2->get_next();            //przejscie do kolejnego elementu kopiowanej listy
-		   tptr->set_data(tptr2->get_data() );  //przepisanie danych
-	   } */
 }
 
 template<typename TYPE>
@@ -92,7 +75,7 @@ else if(_index < this->size() ) // przypadek 2 - srodek listy
 else // przypadek 3 - wstawianie na koncu
 {
 //std::cout<<"przypadek 3\n";	
-	while( tptr->get_next()!=NULL ) {tptr=tptr->get_next(); cout<<"*";} //ustawiamy wskaznik na koniec listy
+	while( tptr->get_next()!=NULL ) tptr=tptr->get_next();  //ustawiamy wskaznik na koniec listy
 	for(int i=this->size()-1; i<_index; ++i) //az dojdziemy do odpowiendiego indexu
 		{
 			tptr->set_next(new aghSnode<TYPE>); //alokacja kolejych el
@@ -178,19 +161,20 @@ return counter;
 
 //----------------------------------------------------------------------
 
-template <typename TYPE>
-aghSlist<TYPE>& aghSlist<TYPE>::operator=(const aghSlist<TYPE>  &right)
+template<typename TYPE>
+aghSlist<TYPE>& aghSlist<TYPE>::operator=(const aghContainer<TYPE> &right)
 {
 
-if( &right == this ); //sprawdza czy nie przypisujemy a=a,zeby nie tracic danych
+
+
+if( &right == this);
 else
 	{
-	if(!(this->isEmpty())) this->clear();
+	if( !(this->isEmpty() )) this->clear();
 	for(int i=0; this->size()<right.size(); i++)
-		this->append(right[i]);	
+		this->append(right[i]);
 	}
 return *this;
 }
-
 
 #endif
