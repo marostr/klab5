@@ -1,5 +1,6 @@
 #ifndef AGHSNODE_H
   #define AGHSNODE_H
+  
 
 template<typename TYPE>
 class aghSnode {
@@ -7,24 +8,24 @@ class aghSnode {
  protected:
 
 TYPE data;
-aghSnode *ptr;
+aghSnode<TYPE> *next;
 
  public:
 
-aghSnode() : ptr(NULL) {}
-aghSnode(TYPE _data, aghSnode *_ptr) : ptr(_ptr), data(_data) {}
-~aghSnode() { ptr = NULL; }
+aghSnode() : next(NULL) {}
+aghSnode(TYPE _data, aghSnode *_ptr) : next(_ptr), data(_data) {}
+virtual ~aghSnode() { next = NULL; }
 
 
 aghSnode<TYPE>& operator=(aghSnode<TYPE>& pattern) { 
 this->data = pattern.data;
-this->ptr  = pattern.ptr;
+this->next  = pattern.next;
 return *this; }
 
 void set_data(TYPE _data) { this->data = _data; }
 TYPE& get_data(void) { return data; }
-void set_next(aghSnode<TYPE> *nptr) { this->ptr = nptr; }
-aghSnode<TYPE>* get_next(void) {return ptr; }
+void set_next(aghSnode<TYPE> *nptr) { this->next = nptr; }
+aghSnode<TYPE>* get_next(void) {return next; }
 
 
 };

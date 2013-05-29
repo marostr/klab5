@@ -1,7 +1,6 @@
 #ifndef AGHSLIST_H
   #define AGHSLIST_H
 	//!!!!!!!!!!!!	
-	using namespace std;
 	#include <string>
 
 	//!!!!!!!!!!!!	
@@ -17,7 +16,7 @@ aghSnode<TYPE>* hptr; //< wskaznik na poczatek listy
 
 aghSlist<TYPE>(int size=0): hptr(NULL) {}
 aghSlist(const aghContainer<TYPE> &pattern);
-~aghSlist<TYPE>() { while(this->size()>0) remove(0); hptr = NULL; }
+~aghSlist<TYPE>() { this->clear(); hptr = NULL; }
 //kon. kop!!
 
 
@@ -80,7 +79,7 @@ else // przypadek 3 - wstawianie na koncu
 		{
 			tptr->set_next(new aghSnode<TYPE>); //alokacja kolejych el
 			tptr=tptr->get_next();				//przest wskaznik
-			tptr->set_data(INT_MIN);
+			//tptr->set_data(INT_MIN);
 	    }
 	tptr->set_data(_val);
 }

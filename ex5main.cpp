@@ -8,8 +8,8 @@ int main(void)
 {
     cout << "main by kk. Last updated 15.04.2013\n";
 
-   aghDlist< aghDlist<int> > a;
-    aghContainer<int>* c1 = new aghDlist<int>;
+    aghDlist< aghDlist<int> > a;
+  aghContainer<int>* c1 = new aghDlist<int>;
     aghContainer<int>* c2;
     a << *((aghDlist<int>*)c1);
 
