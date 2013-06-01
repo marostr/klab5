@@ -2,7 +2,7 @@
   #define AGHDLIST_H
 	//!!!!!!!!!!!!	
 	#include <string>
-
+	
 	//!!!!!!!!!!!!	
 
 template<typename TYPE>
@@ -40,6 +40,9 @@ aghDlist<TYPE>::aghDlist(const aghContainer<TYPE> &pattern)
 template<typename TYPE>
 bool aghDlist<TYPE>::insert(int _index, TYPE const &_val)
 {	
+//static casty rzutuja wskaznik klasy bazowej na wskaznik klasy pochodnej
+//zeby mozna bylo uzywac starych metod klasy bazowej bez zmiany ciala klasy
+//skoro i tak pracujemy na wezlach podwojnych, wiec te operacje sa bezpieczne
 	aghSnode<TYPE> *tptr = (this->hptr),*tptr2;
 	int counter=0;
 
@@ -49,15 +52,15 @@ bool aghDlist<TYPE>::insert(int _index, TYPE const &_val)
 		this->hptr = new aghDnode<TYPE>;
 		this->hptr->set_data(_val);
 		this->hptr->set_next(NULL);
-	       this->hptr->set_prev(NULL);
+	        static_cast<aghDnode<TYPE>*>(this->hptr)->set_prev(NULL);
 	}
 		else if( _index==0 && this->hptr != NULL) //przypadek 1 - poczatek listy
 	{
 		this->hptr = new aghDnode<TYPE>;         //glowa = nowy
 		this->hptr->set_next(tptr);              //nowy nastepny = pamietany
-		this->hptr->set_prev(NULL);				//glowa poprzedni = null
+   		static_cast<aghDnode<TYPE>*>(this->hptr)->set_prev(NULL);	//glowa poprzedni = null
 		this->hptr->set_data(_val);               //ustawianie wartosci
-		this->hptr->set_prev(this->hptr);				//byla glowa poprzedni = nowa glowa
+		static_cast<aghDnode<TYPE>*>(this->hptr)->set_prev(this->hptr);	//byla glowa poprzedni = nowa glowa
 	}
 	else if(_index < this->size() ) // przypadek 2 - srodek listy
 	{
@@ -72,9 +75,9 @@ bool aghDlist<TYPE>::insert(int _index, TYPE const &_val)
 		tptr->set_next( new aghDnode<TYPE> ); // wstaw nowy element w odpowiednie miej.
 		tptr->get_next()->set_data( _val );                 //ustawienie jego wartosci
 		tptr->get_next()->set_next(tptr2);                 //ustawienie jego nastepnika
-		tptr->get_next()->set_prev(tptr);					//ustawienie jego poprzednika
-		tptr=tptr->get_next();								//zmiana wskaznika na nastepny
-		tptr2->set_prev(tptr);								//zmiana poprzednika nastepnego elementu
+		static_cast<aghDnode<TYPE>*>(tptr->get_next())->set_prev(tptr);	//ustawienie jego poprzednika
+		tptr=tptr->get_next();					//zmiana wskaznika na nastepny
+		static_cast<aghDnode<TYPE>*>(tptr2)->set_prev(tptr);	//zmiana poprzednika nastepnego elementu
 		}
 		else // przypadek 3 - wstawianie na koncu
 		{
@@ -82,7 +85,7 @@ bool aghDlist<TYPE>::insert(int _index, TYPE const &_val)
 			for(int i=this->size()-1; i<_index; ++i) //az dojdziemy do odpowiendiego indexu
 				{
 					tptr->set_next(new aghDnode<TYPE>); //alokacja kolejych el
-					tptr->get_next()->set_prev(tptr);
+					static_cast<aghDnode<TYPE>*>(tptr->get_next())->set_prev(tptr);
 					tptr=tptr->get_next();				//przest wskaznik
 				}
 		tptr->set_data(_val);
@@ -94,10 +97,12 @@ return true;
 
 template<typename TYPE>
 bool aghDlist<TYPE>::remove(int _index)
-	{//tu sie da raczej jedna petla ogarnac
+	{
 	if( ( _index >= this->size() ) || (_index < 0) ) return false;
 
-	aghSnode<TYPE> *tptr = this->hptr, *tptr2;
+	aghSnode<TYPE> *tptr , *tptr2;
+	tptr = this->hptr;
+	
 	if( ( _index == 0 ) ) //usuwanie 0wego elementu 
 	{
 		this->hptr = this->hptr->get_next();

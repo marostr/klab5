@@ -5,20 +5,20 @@
 template <typename TYPE>
 class aghDnode : public aghSnode<TYPE> {
 
-	aghDnode<TYPE> *prev;
+	aghSnode<TYPE> *prev;
 
 public:
 
 	aghDnode(): aghSnode<TYPE>::aghSnode(), prev(NULL) { }
 	~aghDnode() { prev = NULL; }
-	aghDnode(const aghSnode<TYPE> &ref) {
+	aghDnode(const aghDnode<TYPE> &ref) {
 	this->prev = ref.get_prev();
 	this->next = ref.get_next();
 	this->data = ref.get_data();
 	}	
 	
 
-	void set_prev(aghDnode* _prev) { prev = _prev; }
+	void set_prev(aghSnode<TYPE>* _prev) { prev = _prev; }
 	aghSnode<TYPE>* get_prev() const { return prev; }
 	
 	aghDnode<TYPE>& operator=(aghDnode<TYPE>& pattern) { 

@@ -7,9 +7,9 @@
 
 template<typename TYPE>
 class aghSlist : public aghContainer<TYPE> {
-
-protected:
-
+ 
+ protected:
+ 
 aghSnode<TYPE>* hptr; //< wskaznik na poczatek listy
 
  public:
