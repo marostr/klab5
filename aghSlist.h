@@ -1,9 +1,6 @@
 #ifndef AGHSLIST_H
   #define AGHSLIST_H
-	//!!!!!!!!!!!!	
-	#include <string>
-
-	//!!!!!!!!!!!!	
+	
 
 template<typename TYPE>
 class aghSlist : public aghContainer<TYPE> {
