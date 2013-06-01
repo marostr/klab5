@@ -9,19 +9,17 @@ template<typename TYPE>
 class aghDlist : public aghSlist<TYPE> {
 
 
-aghDnode<TYPE>* hptr; //< wskaznik na poczatek listy
+//aghDnode<TYPE>* hptr; //< wskaznik na poczatek listy
 
  public:
 
-	aghDlist<TYPE>(int size=0): hptr(NULL) {}
+	aghDlist<TYPE>(int size=0)  {this->hptr = NULL;}
 	aghDlist(const aghContainer<TYPE> &pattern);
-	~aghDlist<TYPE>() { this->clear(); hptr = NULL; }
+	~aghDlist<TYPE>() { this->clear(); this->hptr = NULL; }
 	//kon. kop!!
 
 
 	bool insert(int _index, TYPE const &_val);
-	TYPE& at(int _index) const;
-	int size(void) const;
 	bool remove(int _index);
 
 	aghDlist<TYPE>& operator=(const aghContainer<TYPE> &right);
@@ -42,24 +40,24 @@ aghDlist<TYPE>::aghDlist(const aghContainer<TYPE> &pattern)
 template<typename TYPE>
 bool aghDlist<TYPE>::insert(int _index, TYPE const &_val)
 {	
-	aghDnode<TYPE> *tptr = (this->hptr),*tptr2;
+	aghSnode<TYPE> *tptr = (this->hptr),*tptr2;
 	int counter=0;
 
 	if(_index<0) return false;
-	else if (_index==0 && hptr==NULL)	//przypadek 0 - lista pusta
+	else if (_index==0 && this->hptr==NULL)	//przypadek 0 - lista pusta
 	{
-		hptr = new aghDnode<TYPE>;
-		hptr->set_data(_val);
-		hptr->set_next(NULL);
-		hptr->set_prev(NULL);
+		this->hptr = new aghDnode<TYPE>;
+		this->hptr->set_data(_val);
+		this->hptr->set_next(NULL);
+	       this->hptr->set_prev(NULL);
 	}
-		else if( _index==0 && hptr != NULL) //przypadek 1 - poczatek listy
+		else if( _index==0 && this->hptr != NULL) //przypadek 1 - poczatek listy
 	{
-		hptr = new aghDnode<TYPE>;         //glowa = nowy
-		hptr->set_next(tptr);              //nowy nastepny = pamietany
-		hptr->set_prev(NULL);				//glowa poprzedni = null
-		hptr->set_data(_val);               //ustawianie wartosci
-		tptr->set_prev(hptr);				//byla glowa poprzedni = nowa glowa
+		this->hptr = new aghDnode<TYPE>;         //glowa = nowy
+		this->hptr->set_next(tptr);              //nowy nastepny = pamietany
+		this->hptr->set_prev(NULL);				//glowa poprzedni = null
+		this->hptr->set_data(_val);               //ustawianie wartosci
+		this->hptr->set_prev(this->hptr);				//byla glowa poprzedni = nowa glowa
 	}
 	else if(_index < this->size() ) // przypadek 2 - srodek listy
 	{
@@ -99,10 +97,10 @@ bool aghDlist<TYPE>::remove(int _index)
 	{//tu sie da raczej jedna petla ogarnac
 	if( ( _index >= this->size() ) || (_index < 0) ) return false;
 
-	aghDnode<TYPE> *tptr = hptr, *tptr2;
+	aghSnode<TYPE> *tptr = this->hptr, *tptr2;
 	if( ( _index == 0 ) ) //usuwanie 0wego elementu 
 	{
-		hptr = hptr->get_next();
+		this->hptr = this->hptr->get_next();
 		delete tptr;
 		return true;
 	}
@@ -121,47 +119,9 @@ bool aghDlist<TYPE>::remove(int _index)
 
 //-----------------------------------------------------------------------------
 
-template<typename TYPE>
-TYPE& aghDlist<TYPE>::at(int _index) const
-	{
-	if( (_index>= this->size() ) || (_index < 0) ) throw aghException(-1,"Index out of range!");
-
-	aghDnode<TYPE> *tptr = hptr; //< tymczasowy ptr
-	int counter=0;
-
-	while(counter!=_index)
-	{
-		if( (tptr==NULL) ) throw aghException(0,"at(): Pointer == NULL" ); //jak wskaznik jest nullem
-		tptr= tptr->get_next();
-		counter++;
-	}
-
-return tptr->get_data();
-}
 
 //---------------------------------------------------------------------------
 
-template<typename TYPE>
-int aghDlist<TYPE>::size(void) const
-{
-	aghDnode<TYPE> *tptr;
-	int counter=0;
-
-	if( !(this->hptr) ) return 0; //jak jest nullem
-
-	tptr = this->hptr; //ustaw na poczatek listy
-
-	do
-	{
-		counter++;
-		tptr=tptr->get_next();
-	}
-	while( tptr ); //dopoki nastepny wskaznik nie wskazuje na null
-
-return counter;
-}
-
-//----------------------------------------------------------------------
 
 template<typename TYPE>
 aghDlist<TYPE>& aghDlist<TYPE>::operator=(const aghContainer<TYPE> &right)

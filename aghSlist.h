@@ -8,7 +8,7 @@
 template<typename TYPE>
 class aghSlist : public aghContainer<TYPE> {
 
- protected:
+protected:
 
 aghSnode<TYPE>* hptr; //< wskaznik na poczatek listy
 
@@ -16,14 +16,14 @@ aghSnode<TYPE>* hptr; //< wskaznik na poczatek listy
 
 aghSlist<TYPE>(int size=0): hptr(NULL) {}
 aghSlist(const aghContainer<TYPE> &pattern);
-~aghSlist<TYPE>() { this->clear(); hptr = NULL; }
+virtual ~aghSlist<TYPE>() { this->clear(); hptr = NULL; }
 //kon. kop!!
 
 
-bool insert(int _index, TYPE const &_val);
+virtual bool insert(int _index, TYPE const &_val);
 TYPE& at(int _index) const;
 int size(void) const;
-bool remove(int _index);
+virtual bool remove(int _index);
 
 aghSlist<TYPE>& operator=(const aghContainer<TYPE> &right);
 

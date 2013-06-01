@@ -37,13 +37,33 @@ L1.remove(27);
 */
 std::cout<< L1.size() <<"\n";
 
+aghSlist<int> dd;
+dd.insert(0,100);
+
 try{
 std::cout<<L1.at(0);
+dd.remove(0);
+
 cout<<"\n"<<L1.at(30);
 cout<<"\n"<<L1.at(20);
+L1.at(24) = 1010101;
+
+std::cout << L1;
 }	
 catch(std::string &e)
 {	
 std::cout<<e;	
 }
+aghSlist<int> L2, *LPTR;
+
+L2=L1;
+
+
+
+
+cout<<*LPTR;
+
+
+
+
 }

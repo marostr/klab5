@@ -26,7 +26,7 @@ void set_data(TYPE _data) { this->data = _data; }
 TYPE& get_data(void) { return data; }
 void set_next(aghSnode<TYPE> *nptr) { this->next = nptr; }
 aghSnode<TYPE>* get_next(void) {return next; }
-
+virtual void set_prev(aghSnode<TYPE>*) { }  //magiczna sztuczka
 
 };
 
